@@ -84,6 +84,7 @@ class EmpCubit extends Cubit<EmpState> {
         fromDate: empFromDate!,
         toDate: empToDate,
       );
+      Navigator.pop(context);
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
         content: Text('Employee added successfully'),
       ));
@@ -102,6 +103,7 @@ class EmpCubit extends Cubit<EmpState> {
           fromDate: empFromDate!,
           toDate: empToDate,
           index: index);
+      Navigator.pop(context);
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
         content: Text('Employee edited successfully'),
       ));

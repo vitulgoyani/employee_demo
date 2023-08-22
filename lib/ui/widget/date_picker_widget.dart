@@ -25,7 +25,7 @@ class _DatePickerWidgetState extends State<DatePickerWidget> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 100),
+      padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 50),
       child: Material(
         shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.all(Radius.circular(20))),
@@ -33,15 +33,17 @@ class _DatePickerWidgetState extends State<DatePickerWidget> {
           padding: const EdgeInsets.all(20.0),
           child: SingleChildScrollView(
             child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 GridView.builder(
+                  physics: const NeverScrollableScrollPhysics(),
                   itemCount: 4,
                   shrinkWrap: true,
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 2,
                       mainAxisSpacing: 20,
                       crossAxisSpacing: 20,
-                      childAspectRatio: 4),
+                      childAspectRatio: 2),
                   itemBuilder: (BuildContext context, int index) {
                     return InkWell(
                       onTap: () {
@@ -51,6 +53,24 @@ class _DatePickerWidgetState extends State<DatePickerWidget> {
                         setState(() {
                           dayOptionList[index].selected = true;
                         });
+                        if (dayOptionList[index].name == "Today") {
+                          widget.onSelectDate(DateTime.now());
+                        } else if (dayOptionList[index].name ==
+                            "Next Saturday") {
+                          widget.onSelectDate(DateTime(
+                              DateTime.now().year,
+                              DateTime.now().month,
+                              DateTime.now().day - DateTime.now().weekday % 6));
+                        } else if (dayOptionList[index].name == "Next Sunday") {
+                          widget.onSelectDate(DateTime(
+                              DateTime.now().year,
+                              DateTime.now().month,
+                              DateTime.now().day - DateTime.now().weekday % 7));
+                        } else if (dayOptionList[index].name ==
+                            "After 1 week") {
+                          widget.onSelectDate(
+                              DateTime.now().add(const Duration(days: 7)));
+                        }
                       },
                       child: Container(
                         color: dayOptionList[index].selected!
@@ -80,7 +100,6 @@ class _DatePickerWidgetState extends State<DatePickerWidget> {
                 CalendarCarousel<Event>(
                   onDayPressed: (DateTime date, List<Event> events) {
                     setState(() => _currentDate = date);
-                    widget.onSelectDate(_currentDate);
                   },
                   weekendTextStyle: const TextStyle(
                     color: Colors.black,
@@ -90,7 +109,7 @@ class _DatePickerWidgetState extends State<DatePickerWidget> {
                   leftButtonIcon: const Icon(Icons.arrow_back_ios_new),
                   rightButtonIcon: const Icon(Icons.arrow_forward_ios),
                   weekdayTextStyle: Theme.of(context).textTheme.titleMedium,
-                  height: 380.0,
+                  height: 350.0,
                   selectedDateTime: _currentDate,
                   showOnlyCurrentMonthDate: true,
                 ),
@@ -105,7 +124,7 @@ class _DatePickerWidgetState extends State<DatePickerWidget> {
                           color: Theme.of(context).primaryColor,
                         ),
                         const SizedBox(
-                          width: 10,
+                          width: 5,
                         ),
                         Text(DateFormat.yMMMd().format(_currentDate))
                       ],
@@ -126,7 +145,7 @@ class _DatePickerWidgetState extends State<DatePickerWidget> {
                           ),
                         ),
                         const SizedBox(
-                          width: 10,
+                          width: 5,
                         ),
                         ElevatedButton(
                             onPressed: () {
