@@ -35,6 +35,8 @@ dependencies:
   hive_flutter:
   intl:
   path_provider:
+  flutter_bloc:
+  flutter_swipe_action_cell:
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.

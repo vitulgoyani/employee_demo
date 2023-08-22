@@ -4,7 +4,9 @@ import 'package:flutter_calendar_carousel/flutter_calendar_carousel.dart';
 import 'package:intl/intl.dart';
 
 class DatePickerWidget extends StatefulWidget {
-  const DatePickerWidget({super.key});
+  const DatePickerWidget({super.key, required this.onSelectDate});
+
+  final ValueChanged<DateTime> onSelectDate;
 
   @override
   State<DatePickerWidget> createState() => _DatePickerWidgetState();
@@ -78,6 +80,7 @@ class _DatePickerWidgetState extends State<DatePickerWidget> {
                 CalendarCarousel<Event>(
                   onDayPressed: (DateTime date, List<Event> events) {
                     setState(() => _currentDate = date);
+                    widget.onSelectDate(_currentDate);
                   },
                   weekendTextStyle: const TextStyle(
                     color: Colors.black,
@@ -126,7 +129,11 @@ class _DatePickerWidgetState extends State<DatePickerWidget> {
                           width: 10,
                         ),
                         ElevatedButton(
-                            onPressed: () {}, child: const Text("Save")),
+                            onPressed: () {
+                              widget.onSelectDate(_currentDate);
+                              Navigator.pop(context);
+                            },
+                            child: const Text("Save")),
                       ],
                     ),
                   ],
