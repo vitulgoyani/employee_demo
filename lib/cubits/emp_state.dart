@@ -6,6 +6,8 @@ class InitEmpState extends EmpState {}
 
 class LoadingEmpState extends EmpState {}
 
+class EmptyEmpState extends EmpState {}
+
 class ErrorEmpState extends EmpState {
   final String message;
 

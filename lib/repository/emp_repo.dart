@@ -16,7 +16,7 @@ class EmpRepo {
       {required String empName,
       required String empRole,
       required DateTime fromDate,
-      required DateTime toDate}) async {
+      required DateTime? toDate}) async {
     var box = await Hive.openBox('empBox');
     var empData = EmployeeData(
         empName: empName, empRole: empRole, fromDate: fromDate, toDate: toDate);
@@ -28,7 +28,7 @@ class EmpRepo {
       required String empRole,
       required int index,
       required DateTime fromDate,
-      required DateTime toDate}) async {
+      required DateTime? toDate}) async {
     var box = await Hive.openBox('empBox');
     var empData = EmployeeData(
         empName: empName, empRole: empRole, fromDate: fromDate, toDate: toDate);

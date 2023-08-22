@@ -43,7 +43,11 @@ class _EmployeeListPageState extends State<EmployeeListPage> {
               ],
             ),
           );
-        } else if (state is ResponseEmpState) {
+        }
+        else if(state is EmptyEmpState){
+          return Center(child: Image.asset("assets/no_emp_found.png"));
+        }
+        else if (state is ResponseEmpState) {
           final empList = state.empList;
           return ListView.separated(
             itemCount: empList.length,

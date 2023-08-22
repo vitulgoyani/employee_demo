@@ -62,7 +62,11 @@ class EmpCubit extends Cubit<EmpState> {
     emit(LoadingEmpState());
     try {
       final empList = await _empRepo.getAllEmp();
-      emit(ResponseEmpState(empList));
+      if (empList.isEmpty) {
+        emit(EmptyEmpState());
+      } else {
+        emit(ResponseEmpState(empList));
+      }
     } catch (e) {
       emit(ErrorEmpState(e.toString()));
     }
@@ -75,7 +79,7 @@ class EmpCubit extends Cubit<EmpState> {
         empName: empNameTxt.text,
         empRole: empRoleTxt.text,
         fromDate: empFromDate!,
-        toDate: empToDate!,
+        toDate: empToDate,
       );
       fetchEmp();
     } catch (e) {
@@ -90,7 +94,7 @@ class EmpCubit extends Cubit<EmpState> {
           empName: empNameTxt.text,
           empRole: empRoleTxt.text,
           fromDate: empFromDate!,
-          toDate: empToDate!,
+          toDate: empToDate,
           index: index);
       fetchEmp();
     } catch (e) {
