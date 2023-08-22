@@ -1,6 +1,7 @@
 import 'package:employee_demo/cubits/emp_state.dart';
 import 'package:employee_demo/models/employee_data_model.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 
@@ -41,11 +42,13 @@ class EmpCubit extends Cubit<EmpState> {
   setEmpData(EmployeeData employeeData) {
     empNameTxt.text = employeeData.empName!;
     empRoleTxt.text = employeeData.empRole!;
-    empToDateTxt.text = DateFormat.yMMMd().format(employeeData.toDate!);
+    empToDateTxt.text = employeeData.toDate != null
+        ? DateFormat.yMMMd().format(employeeData.toDate!)
+        : "";
     empFromDateTxt.text = DateFormat.yMMMd().format(employeeData.fromDate!);
     empRole = employeeData.empRole!;
     empFromDate = employeeData.fromDate!;
-    empToDate = employeeData.toDate!;
+    empToDate = employeeData.toDate;
   }
 
   clearEmpFormData() {
@@ -72,7 +75,7 @@ class EmpCubit extends Cubit<EmpState> {
     }
   }
 
-  Future<void> addEmp() async {
+  Future<void> addEmp(context) async {
     emit(LoadingEmpState());
     try {
       await _empRepo.addEmp(
@@ -81,13 +84,16 @@ class EmpCubit extends Cubit<EmpState> {
         fromDate: empFromDate!,
         toDate: empToDate,
       );
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text('Employee added successfully'),
+      ));
       fetchEmp();
     } catch (e) {
       emit(ErrorEmpState(e.toString()));
     }
   }
 
-  Future<void> editEmp(int index) async {
+  Future<void> editEmp(context, int index) async {
     emit(LoadingEmpState());
     try {
       await _empRepo.editEmp(
@@ -96,16 +102,22 @@ class EmpCubit extends Cubit<EmpState> {
           fromDate: empFromDate!,
           toDate: empToDate,
           index: index);
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text('Employee edited successfully'),
+      ));
       fetchEmp();
     } catch (e) {
       emit(ErrorEmpState(e.toString()));
     }
   }
 
-  Future<void> deleteEmp(int index) async {
+  Future<void> deleteEmp(context, int index) async {
     emit(LoadingEmpState());
     try {
       await _empRepo.deleteEmp(index: index);
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text('Employee deleted successfully'),
+      ));
       fetchEmp();
     } catch (e) {
       emit(ErrorEmpState(e.toString()));

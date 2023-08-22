@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class AddEmpDetailsPage extends StatelessWidget {
-  const AddEmpDetailsPage({super.key,this.index});
+  const AddEmpDetailsPage({super.key, this.index});
 
   final int? index;
 
@@ -148,13 +148,27 @@ class AddEmpDetailsPage extends StatelessWidget {
                           ElevatedButton(
                               onPressed: () async {
                                 if (empCubit.empNameTxt.text == "") {
+                                  ScaffoldMessenger.of(context)
+                                      .showSnackBar(const SnackBar(
+                                    content: Text('Please enter employee name'),
+                                  ));
                                 } else if (empCubit.empRoleTxt.text == "") {
+                                  ScaffoldMessenger.of(context)
+                                      .showSnackBar(const SnackBar(
+                                    content:
+                                        Text('Please select employee role'),
+                                  ));
                                 } else if (empCubit.empFromDateTxt.text == "") {
+                                  ScaffoldMessenger.of(context)
+                                      .showSnackBar(const SnackBar(
+                                    content: Text(
+                                        'Please select employee from date'),
+                                  ));
                                 } else {
-                                  if(index!=null){
-                                    empCubit.editEmp(index!);
-                                  }else {
-                                    empCubit.addEmp();
+                                  if (index != null) {
+                                    empCubit.editEmp(context,index!);
+                                  } else {
+                                    empCubit.addEmp(context);
                                   }
                                 }
                               },
